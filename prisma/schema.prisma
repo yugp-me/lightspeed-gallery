@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Image {
+  id            String   @id @default(cuid())
+  originalName  String
+  fileName      String   @unique
+  mimeType      String
+  width         Int
+  height        Int
+  title         String
+  description   String   @default("")
+  tags          String   @default("")
+  iso           String   @default("")
+  shutterSpeed  String   @default("")
+  aperture      String   @default("")
+  camera        String   @default("")
+  lens          String   @default("")
+  focalLength   String   @default("")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([createdAt])
+}
+
+model SiteSettings {
+  id                Int      @id @default(1)
+  accentColor       String   @default("#6464ff")
+  backgroundColor   String   @default("#11110f")
+  heroTitle         String   @default("Lightspeed Gallery")
+  heroDescription   String   @default("A collection of the best photos I've taken.")
+  heroTitleColor    String   @default("#f4f1e8")
+  heroDescriptionColor String @default("#a8a79e")
+  footerText        String   @default("© 20XX Name. All rights reserved.")
+  iconName          String   @default("aperture")
+  desktopColumns    Int      @default(4)
+  tabletColumns     Int      @default(3)
+  mobileColumns     Int      @default(2)
+  cornerRadius      Int      @default(3)
+  fadeDuration      Int      @default(650)
+  lightboxCoverage  Int      @default(94)
+  imageSpacing      Int      @default(14)
+  updatedAt         DateTime @updatedAt
+}

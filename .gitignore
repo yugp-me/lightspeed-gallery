@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+.env*
+!.env.example
+prisma/*.db
+prisma/*.db-journal
+photos/og/*
+photos/thumbs/*
+photos/big/*
+!photos/og/.gitkeep
+!photos/thumbs/.gitkeep
+!photos/big/.gitkeep
