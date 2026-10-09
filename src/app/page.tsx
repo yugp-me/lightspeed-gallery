@@ -5,6 +5,7 @@ import { collectTags, matchesTagFilter } from "@/lib/filtering";
 import { getSettings } from "@/lib/settings";
 import { publicMediaUrl } from "@/lib/media";
 import { Gallery, type GalleryImage } from "@/components/gallery/Gallery";
+import { TagFilters } from "@/components/gallery/TagFilters";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +26,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
   const tags = collectTags(storedImages);
 
   return (
-    <main style={{ "--accent": settings.accentColor, "--page-bg": settings.backgroundColor, "--hero-title": settings.heroTitleColor, "--hero-description": settings.heroDescriptionColor, "--columns-desktop": settings.desktopColumns, "--columns-tablet": settings.tabletColumns, "--columns-mobile": settings.mobileColumns, "--tile-gap": `${settings.imageSpacing}px`, "--tile-radius": `${settings.cornerRadius}px`, "--fade-duration": `${settings.fadeDuration}ms`, "--lightbox-coverage": `${settings.lightboxCoverage}vw` } as React.CSSProperties}>
+    <main className="site-page" style={{ "--accent": settings.accentColor, "--page-bg": settings.backgroundColor, "--hero-title": settings.heroTitleColor, "--hero-description": settings.heroDescriptionColor, "--columns-desktop": settings.desktopColumns, "--columns-tablet": settings.tabletColumns, "--columns-mobile": settings.mobileColumns, "--tile-gap": `${settings.imageSpacing}px`, "--tile-radius": `${settings.cornerRadius}px`, "--fade-duration": `${settings.fadeDuration}ms`, "--lightbox-coverage": `${settings.lightboxCoverage}vw` } as React.CSSProperties}>
       <header className="site-header shell"><Link className="brand" href="/">LS<span>/</span>GALLERY</Link><Link className="admin-link" href="/admin">Admin <span>↗</span></Link></header>
       <section className="hero shell">
         <div className="hero-icon"><HeroIcon name={settings.iconName} /></div>
@@ -34,7 +35,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
         <p className="hero-description">{settings.heroDescription}</p>
       </section>
       <section className="gallery-section shell">
-        <div className="gallery-toolbar"><div className="tag-list"><Link className={!selectedTags.length ? "active" : ""} href="/">All</Link>{tags.map((tag) => <Link className={selectedTags.includes(tag) ? "active" : ""} href={`/?tag=${encodeURIComponent(tag)}`} key={tag}>{tag}</Link>)}</div><form className="search-form"><Search size={16} /><input name="q" defaultValue={params.q} placeholder="Search archive" aria-label="Search archive" /></form></div>
+        <div className="gallery-toolbar"><TagFilters tags={tags} /><form className="search-form"><Search size={16} />{selectedTags.map((tag) => <input type="hidden" name="tag" value={tag} key={tag} />)}<input name="q" defaultValue={params.q} placeholder="Search archive" aria-label="Search archive" /></form></div>
         {images.length > 0 ? <Gallery images={images} fadeDuration={settings.fadeDuration} radius={settings.cornerRadius} /> : <div className="empty-state"><p className="eyebrow">No frames found</p><p>Try another search or clear the current filter.</p></div>}
       </section>
       <footer className="site-footer shell"><span>{settings.footerText}</span><span>{String(storedImages.length).padStart(2, "0")} Photos</span></footer>
