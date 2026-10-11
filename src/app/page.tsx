@@ -36,7 +36,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
       </section>
       <section className="gallery-section shell">
         <div className="gallery-toolbar"><TagFilters tags={tags} /><form className="search-form"><Search size={16} />{selectedTags.map((tag) => <input type="hidden" name="tag" value={tag} key={tag} />)}<input name="q" defaultValue={params.q} placeholder="Search photos" aria-label="Search photos" /></form></div>
-        {images.length > 0 ? <Gallery images={images} fadeDuration={settings.fadeDuration} radius={settings.cornerRadius} /> : <div className="empty-state"><p className="eyebrow">No frames found</p><p>Try another search or clear the current filter.</p></div>}
+        {images.length > 0 ? <Gallery images={images} fadeDuration={settings.fadeDuration} radius={settings.cornerRadius} desktopColumns={settings.desktopColumns} tabletColumns={settings.tabletColumns} mobileColumns={settings.mobileColumns} /> : <div className="empty-state"><p className="eyebrow">No frames found</p><p>Try another search or clear the current filter.</p></div>}
       </section>
       <footer className="site-footer shell"><span>{settings.footerText}</span><span>{String(storedImages.length).padStart(2, "0")} Photos</span></footer>
     </main>

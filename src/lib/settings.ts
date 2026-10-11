@@ -17,7 +17,7 @@ export const defaultSettings = {
   cornerRadius: 3,
   fadeDuration: 650,
   lightboxCoverage: 85,
-  imageSpacing: 14,
+  imageSpacing: 10,
 };
 
 export async function getSettings() {

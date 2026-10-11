@@ -36,7 +36,8 @@ button { color: inherit; }
 .image-info { left: 18px; right: auto; width: min(560px, calc(100% - 36px)); max-width: none; display: grid; grid-template-columns: minmax(0, 1fr) auto; font-size: 13px; }
 @media (max-width: 640px) { .image-info { left: 10px; right: 10px; width: auto; grid-template-columns: 1fr; } }
 .gallery-grid { display: grid; grid-template-columns: repeat(var(--columns-desktop, 4), minmax(0, 1fr)); column-gap: var(--tile-gap, 14px); row-gap: var(--tile-gap, 14px); align-items: start; }
-.gallery-tile { margin-bottom: 0; }
+.gallery-grid { grid-template-columns: repeat(var(--active-columns, var(--columns-desktop, 4)), minmax(0, 1fr)); }
+.gallery-column { min-width: 0; display: flex; flex-direction: column; gap: var(--tile-gap, 14px); }.gallery-tile { margin-bottom: 0; }
 @media (max-width: 1000px) { .gallery-grid { grid-template-columns: repeat(var(--columns-tablet, 3), minmax(0, 1fr)); } }
 @media (max-width: 640px) { .gallery-grid { grid-template-columns: repeat(var(--columns-mobile, 2), minmax(0, 1fr)); } }
 .lightbox-figure .image-info { left: 18px; right: auto; width: min(560px, calc(100% - 36px)); max-width: calc(100% - 36px); box-sizing: border-box; }
