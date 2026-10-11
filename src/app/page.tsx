@@ -18,7 +18,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
   const params = await searchParams;
   const selectedTags = params.tag?.split(",").filter(Boolean) ?? [];
   const query = params.q?.trim().toLowerCase() ?? "";
-  const [settings, storedImages] = await Promise.all([getSettings(), db.image.findMany({ orderBy: { createdAt: "desc" } })]);
+  const [settings, storedImages] = await Promise.all([getSettings(), db.image.findMany({ orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }] })]);
   const images: GalleryImage[] = storedImages
     .filter((image) => matchesTagFilter(image.tags, selectedTags))
     .filter((image) => !query || `${image.title} ${image.description} ${image.tags}`.toLowerCase().includes(query))

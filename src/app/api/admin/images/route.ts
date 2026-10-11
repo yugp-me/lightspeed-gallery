@@ -11,7 +11,7 @@ export const runtime = "nodejs";
 
 export async function GET() {
   if (!(await isAdmin())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  return NextResponse.json({ images: await db.image.findMany({ orderBy: { createdAt: "desc" } }) });
+  return NextResponse.json({ images: await db.image.findMany({ orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }] }) });
 }
 
 export async function POST(request: Request) {
@@ -32,7 +32,8 @@ export async function POST(request: Request) {
     await fs.writeFile(path.join(mediaDirectories.original, fileName), input);
     await sharp(input).resize({ width: 900, withoutEnlargement: true }).webp({ quality: 78 }).toFile(path.join(mediaDirectories.thumb, derivativeName));
     await sharp(input).resize({ width: 2200, withoutEnlargement: true }).webp({ quality: 88 }).toFile(path.join(mediaDirectories.big, derivativeName));
-    const image = await db.image.create({ data: { fileName, originalName, mimeType: `image/${info.format === "jpeg" ? "jpeg" : info.format}`, width: info.width, height: info.height, title: String(form.get("title") ?? originalName), description: String(form.get("description") ?? ""), tags: String(form.get("tags") ?? ""), iso: String(form.get("iso") ?? ""), shutterSpeed: String(form.get("shutterSpeed") ?? ""), aperture: String(form.get("aperture") ?? ""), camera: String(form.get("camera") ?? ""), lens: String(form.get("lens") ?? ""), focalLength: String(form.get("focalLength") ?? "") } });
+    const lastImage = await db.image.findFirst({ orderBy: { sortOrder: "desc" }, select: { sortOrder: true } });
+    const image = await db.image.create({ data: { fileName, originalName, mimeType: `image/${info.format === "jpeg" ? "jpeg" : info.format}`, width: info.width, height: info.height, sortOrder: (lastImage?.sortOrder ?? -1) + 1, title: String(form.get("title") ?? originalName), description: String(form.get("description") ?? ""), tags: String(form.get("tags") ?? ""), iso: String(form.get("iso") ?? ""), shutterSpeed: String(form.get("shutterSpeed") ?? ""), aperture: String(form.get("aperture") ?? ""), camera: String(form.get("camera") ?? ""), lens: String(form.get("lens") ?? ""), focalLength: String(form.get("focalLength") ?? "") } });
     return NextResponse.json({ image });
   } catch {
     await Promise.all([path.join(mediaDirectories.original, fileName), path.join(mediaDirectories.thumb, derivativeName), path.join(mediaDirectories.big, derivativeName)].map((filePath) => fs.rm(filePath, { force: true })));
@@ -54,6 +55,16 @@ export async function PUT(request: Request) {
   if (!(await isAdmin()) || !isSameOrigin(request)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const body = await request.json().catch(() => ({}));
   if (!body.id) return NextResponse.json({ error: "Missing image id" }, { status: 400 });
+  if (body.move === "up" || body.move === "down") {
+    const images = await db.image.findMany({ orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }] });
+    const index = images.findIndex((image) => image.id === body.id);
+    const targetIndex = body.move === "up" ? index - 1 : index + 1;
+    if (index < 0 || targetIndex < 0 || targetIndex >= images.length) return NextResponse.json({ images });
+    const reordered = [...images];
+    [reordered[index], reordered[targetIndex]] = [reordered[targetIndex], reordered[index]];
+    await db.$transaction(reordered.map((image, position) => db.image.update({ where: { id: image.id }, data: { sortOrder: position } })));
+    return NextResponse.json({ images: reordered.map((image, position) => ({ ...image, sortOrder: position })) });
+  }
   const image = await db.image.update({ where: { id: body.id }, data: { title: String(body.title ?? ""), description: String(body.description ?? ""), tags: String(body.tags ?? ""), iso: String(body.iso ?? ""), shutterSpeed: String(body.shutterSpeed ?? ""), aperture: String(body.aperture ?? ""), camera: String(body.camera ?? ""), lens: String(body.lens ?? ""), focalLength: String(body.focalLength ?? "") } });
   return NextResponse.json({ image });
 }
