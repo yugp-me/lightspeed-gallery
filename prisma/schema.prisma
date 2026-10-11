@@ -34,6 +34,8 @@ model SiteSettings {
   accentColor       String   @default("#6464ff")
   backgroundColor   String   @default("#11110f")
   heroTitle         String   @default("Lightspeed Gallery")
+  headerText        String   @default("LS/GALLERY")
+  heroEyebrow       String   @default("Photography Website")
   heroDescription   String   @default("A collection of the best photos I've taken.")
   heroTitleColor    String   @default("#f4f1e8")
   heroDescriptionColor String @default("#a8a79e")

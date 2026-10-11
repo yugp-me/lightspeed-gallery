@@ -4,6 +4,8 @@ export const defaultSettings = {
   accentColor: "#6464ff",
   backgroundColor: "#11110f",
   heroTitle: "Lightspeed Gallery",
+  headerText: "LS GALLERY",
+  heroEyebrow: "Photography Portfolio",
   heroDescription: "A collection of the best photos I've taken.",
   heroTitleColor: "#f4f1e8",
   heroDescriptionColor: "#a8a79e",
@@ -14,7 +16,7 @@ export const defaultSettings = {
   mobileColumns: 2,
   cornerRadius: 3,
   fadeDuration: 650,
-  lightboxCoverage: 94,
+  lightboxCoverage: 85,
   imageSpacing: 14,
 };
 

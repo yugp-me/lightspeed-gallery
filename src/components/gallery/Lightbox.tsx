@@ -22,7 +22,7 @@ export function Lightbox({ images, index, onClose, onChange, radius }: { images:
 
   useEffect(() => { setShowMetadata(false); }, [index]);
 
-  const metadata = [["ISO", image.iso], ["Shutter", image.shutterSpeed], ["Aperture", image.aperture], ["Camera", image.camera], ["Lens", image.lens], ["Focal", image.focalLength]].filter(([, value]) => value);
+  const metadata = [["ISO", image.iso], ["Shutter Speed", image.shutterSpeed], ["Aperture", image.aperture], ["Camera", image.camera], ["Lens", image.lens], ["Focal Length", image.focalLength]].filter(([, value]) => value);
 
   return (
     <div className="lightbox" role="dialog" aria-modal="true" aria-label={image.title} onClick={(event) => event.target === event.currentTarget && onClose()}>
