@@ -8,7 +8,9 @@ prisma/*.db-journal
 photos/og/*
 photos/thumbs/*
 photos/big/*
+photos/site/*
 !photos/og/.gitkeep
 !photos/thumbs/.gitkeep
 !photos/big/.gitkeep
+!photos/site/.gitkeep
 *.tsbuildinfo

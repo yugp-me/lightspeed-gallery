@@ -8,8 +8,9 @@ A self-hosted photography gallery built with Next.js, TypeScript, SQLite, Prisma
 2. Run `npm install`.
 3. Copy `.env.example` to `.env`.
 4. Set `ADMIN_PASSWORD_HASH` to the supplied bcrypt hash and replace `SESSION_SECRET` with a random secret. In `.env.`, escape each hash dollar sign as `\$` because Next.js expands `$` references in environment files.
-5. Run `npm run db:push`.
-6. Start with `npm run dev` and open `http://localhost:3000`.
+5. Set `NEXT_PUBLIC_SITE_URL` to the public site URL in production so social preview image URLs resolve correctly.
+6. Run `npm run db:push`.
+7. Start with `npm run dev` and open `http://localhost:3000`.
 
 Uploaded originals are stored in `photos/og`, gallery thumbnails in `photos/thumbs`, and lightbox images in `photos/big`.
 
